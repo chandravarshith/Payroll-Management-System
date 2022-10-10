@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Payroll_Management_System.Models.Payslip>
+
+@{
+    ViewData["Title"] = "Payslip Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h1 id="Heading" class="mt-3">Payslip Report</h1>
+<div class="text-sm-end me-5">
+    <input class="btn btn-dark" type="button" value="Print" onclick="JavaScript:printReport('print');" />
+</div>
+<div id="print">
+    <table class="table mt-4">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Year)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Month)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Bonus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalAllowance)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LeaveDeduction)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Salary)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Month)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bonus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalAllowance)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LeaveDeduction)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Salary)
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+
+    <script language="javascript" type="text/javascript">
+        function printReport(strid) {
+            var divElements = document.getElementById(strid).innerHTML;
+            var heading = document.getElementById("Heading").innerHTML;
+            var oldPage = document.body.innerHTML;
+            document.body.innerHTML = '<h3>' + heading + '</h3>'+divElements;
+            window.print();
+            document.body.innerHTML = oldPage;
+        }
+    </script>
+}

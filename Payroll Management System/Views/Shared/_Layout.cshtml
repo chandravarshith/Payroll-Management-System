@@ -1,0 +1,104 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Payroll_Management_System.Areas.Identity.Data
+
+@inject SignInManager<PmsUser> signInManager
+@inject UserManager<PmsUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Payroll Management System</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Payroll_Management_System.styles.css" asp-append-version="true" />
+</head>
+<body onunload="signOut()">
+    
+    
+    <div class="wrapper">
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <!-- Sidebar  -->
+            <nav id="sidebar">
+                <div class="sidebar-header">
+                
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                        <h3>Payroll <br /> Management <br /> System</h3>
+                    </a>
+                </div>
+
+                <ul class="list-unstyled components">
+                    <li >
+                        <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Levels" asp-action="Index">Level</a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Leaves" asp-action="Index">Leaves</a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Employees" asp-action="Index">Employee</a>
+                    </li>
+                    <li>
+                        <a id="register" asp-area="Identity" asp-page="/Account/Register">Add User</a>
+                    </li>
+                </ul>
+
+                <ul class="list-unstyled CTAs">
+                    <li>
+                        <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" class="download">Hello @UserManager.GetUserName(User)</a>
+                    </li>
+                    <li>
+                        <a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" class="download">Logout</a>
+                    </li>
+                </ul>
+            </nav>
+        }
+
+        <div id="content">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+    
+
+    <!--<div class="container">
+        <main role="main" class="pb-3">
+            RenderBody()
+        </main>
+    </div>-->
+
+   <!-- <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - Payroll Management System - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>-->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+             $('#sidebar ul li').on('click', function (e) {
+                $('#sidebar ul .active').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+        
+        function signOut() {
+            $.ajax({
+                url: "/Account/Logout",
+                success: function (result) { }
+            });
+        }
+    </script>
+
+</body>
+</html>

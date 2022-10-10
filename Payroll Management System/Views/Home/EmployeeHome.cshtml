@@ -1,0 +1,20 @@
+﻿@model Payroll_Management_System.Areas.Identity.Data.PmsUser
+
+@{
+    ViewData["Title"] = "Employee Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Employee</h1>
+</div>
+<div class="container text-center mt-5">
+    <div class="row mt-5">
+        <div class="col">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Leaves" asp-action="Index">Leaves</a>
+        </div>
+        <div class="col">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Employees" asp-action="Index">Salary</a>
+        </div>
+    </div>
+</div>

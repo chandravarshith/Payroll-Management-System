@@ -1,0 +1,164 @@
+﻿@model IEnumerable<Payroll_Management_System.Models.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt-4 mb-3 mx-3">
+    <h1>Manage Employees</h1>
+    <div class="col-lg-7 mt-4">
+        <div class="input-group">
+            <input type="search" placeholder="search employee id" id="form1" class="form-control" style="box-shadow:none;" />
+            <button type="button" class="btn btn-dark" style="box-shadow:none;">
+                <i class="bi bi-search" style="color=white;"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+@*<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LevelId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MailId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pincode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankAccountNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkLocation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumOfLeaves)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LevelId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MailId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.State)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pincode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BankName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BankAccountNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkLocation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumOfLeaves)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.EmployeeId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.EmployeeId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.EmployeeId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+*@
+
+
+<div class="container mx-2">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-3 my-3 mx-2 me-5">
+                <div class="card" style="width: 15rem;border-radius:7px;box-shadow:3px 3px 3px 3px grey;">
+                    <div class="card-body mx-2">
+                        <h4 class="card-title mb-3">@Html.DisplayFor(modelItem => item.FirstName)&nbsp;@Html.DisplayFor(modelItem => item.LastName)</h4>
+                        <h6 class="card-subtitle mb-4 text-muted">
+                            @if(item.Status.Equals("Active")){
+                                <i class="bi bi-check-circle-fill me-2" style="color: green;"></i>
+                            }
+                            else{
+                                <i class="bi bi-x-circle-fill me-2" style="color: darkred;"></i>
+                            }
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </h6>
+                        <a class="w-100 btn btn-dark mx-auto" asp-action="Details" asp-route-id="@item.EmployeeId" style="box-shadow:none;">
+                            <i class="bi bi-eye-fill me-2" style="color=white;"></i>View
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,109 @@
+﻿@model IEnumerable<Payroll_Management_System.Models.Level>
+
+@{
+    ViewData["Title"] = "Levels";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row mt-4 mb-5 mx-3 ">
+    <h1>Manage Levels</h1>
+    <div class="col-lg-7 mt-3">
+        <div class="input-group">
+            <input type="search" placeholder="search level id" id="form1" class="form-control" style="box-shadow:none;" />
+            <button type="button" class="btn btn-dark" style="box-shadow:none;">
+                <i class="bi bi-search" style="color=white;"></i>
+            </button>
+        </div>
+    </div>
+    <div class="col-lg-2 mt-3">
+    </div>
+    <div class="col-lg-3 mt-3">
+        <a class="btn btn-dark" style="box-shadow:none;" asp-action="Create">
+            <i class="bi bi-plus-circle me-2"></i>Add Level
+        </a>
+    </div>
+</div>
+@*<!--<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LevelId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BasicPay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HouseRentAllowance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TravelAllowance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MedicalAllowance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TaxDeductions)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MonthlyLeavesPermitted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LossOfPay)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+@foreach (var item in Model) {
+        @*<!--<tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LevelId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BasicPay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HouseRentAllowance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TravelAllowance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MedicalAllowance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaxDeductions)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MonthlyLeavesPermitted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LossOfPay)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.LevelId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.LevelId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.LevelId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+-->*@
+
+<div class="container mx-2">
+    <div class="row">
+        @foreach (var item in Model) {
+            <div class="col-lg-3 my-3 mx-2 me-5">
+                <div class="card" style="width: 18rem;border-radius:7px;box-shadow:3px 3px 3px 3px grey;">
+                    <div class="card-body">
+                        <h4 class="card-title ms-3 me-1" style="display: inline;">Level @Html.DisplayFor(modelItem => item.LevelId)</h4>
+                        <a class="btn btn-dark ms-5" asp-action="Details" asp-route-id="@item.LevelId" style="box-shadow:none;">
+                            <i class="bi bi-eye-fill me-2" style="color=white;"></i>View
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

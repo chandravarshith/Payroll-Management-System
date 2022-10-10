@@ -1,0 +1,65 @@
+﻿@model Payroll_Management_System.Models.Level
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Level</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="LevelId" />
+            <div class="form-group">
+                <label asp-for="BasicPay" class="control-label"></label>
+                <input asp-for="BasicPay" class="form-control" />
+                <span asp-validation-for="BasicPay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HouseRentAllowance" class="control-label"></label>
+                <input asp-for="HouseRentAllowance" class="form-control" />
+                <span asp-validation-for="HouseRentAllowance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TravelAllowance" class="control-label"></label>
+                <input asp-for="TravelAllowance" class="form-control" />
+                <span asp-validation-for="TravelAllowance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MedicalAllowance" class="control-label"></label>
+                <input asp-for="MedicalAllowance" class="form-control" />
+                <span asp-validation-for="MedicalAllowance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TaxDeductions" class="control-label"></label>
+                <input asp-for="TaxDeductions" class="form-control" />
+                <span asp-validation-for="TaxDeductions" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MonthlyLeavesPermitted" class="control-label"></label>
+                <input asp-for="MonthlyLeavesPermitted" class="form-control" />
+                <span asp-validation-for="MonthlyLeavesPermitted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LossOfPay" class="control-label"></label>
+                <input asp-for="LossOfPay" class="form-control" />
+                <span asp-validation-for="LossOfPay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

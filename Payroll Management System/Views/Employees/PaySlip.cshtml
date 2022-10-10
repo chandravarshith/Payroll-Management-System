@@ -1,0 +1,64 @@
+﻿@model Payroll_Management_System.Models.EmployeePaySlip
+
+@{
+    ViewData["Title"] = "Generate Pay Slip";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="mx-4">
+    <h1 class="font-weight-bold py-3 mt-5">Pay slip</h1>
+  
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="PaySlip">
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="PaySlip.Id" />
+                <input type="hidden" asp-for="PaySlip.EmployeeId" />
+                <input type="hidden" asp-for="PaySlip.LeaveDeduction" />
+                <input type="hidden" asp-for="PaySlip.Salary" />
+                <div class="form-group mt-4 mb-3">
+                    <label asp-for="PaySlip.Year" class="control-label"></label>
+                    <input asp-for="PaySlip.Year" class="form-control" />
+                    <span asp-validation-for="PaySlip.Year" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="PaySlip.Month" class="control-label"></label>
+                    <input asp-for="PaySlip.Month" class="form-control" />
+                    <span asp-validation-for="PaySlip.Month" class="text-danger"></span>
+                </div>
+                <!--<div class="form-group">
+                    <label asp-for="EmployeeId" class="control-label"></label>
+                    <input asp-for="EmployeeId" class="form-control" />
+                    <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                </div>-->
+                <div class="form-group mb-4">
+                    <label asp-for="PaySlip.Bonus" class="control-label"></label>
+                    <input asp-for="PaySlip.Bonus" class="form-control" />
+                    <span asp-validation-for="PaySlip.Bonus" class="text-danger"></span>
+                </div>
+              <!--<div class="form-group">
+                    <label asp-for="LeaveDeduction" class="control-label"></label>
+                    <input asp-for="LeaveDeduction" class="form-control" />
+                    <span asp-validation-for="LeaveDeduction" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Salary" class="control-label"></label>
+                    <input asp-for="Salary" class="form-control" />
+                    <span asp-validation-for="Salary" class="text-danger"></span>
+                  </div>-->
+                <div class="form-group mb-3">
+                    <input type="submit" value="Generate" class="btn btn-dark me-4" />
+                    <a class="btn btn-outline-dark" asp-action="Details" asp-route-id="@Model?.Emp.EmployeeId" style="box-shadow:none;">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

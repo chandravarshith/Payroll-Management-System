@@ -1,0 +1,46 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml"; 
+}
+
+<div id="print" class="text-center">
+    <div class="text-center">
+        <h1 class="display-4">Salary</h1>
+    </div>
+</div>
+<br/>
+<div class="text-center">
+    <input type="button" value="Print" runat="server" onclick="JavaScript:PrintElem('print');" />
+</div>
+    
+
+<script language="javascript" type="text/javascript">
+    function generateSalary() {
+        var divElements = document.getElementById(print).innerHTML;
+        var oldPage = document.body.innerHTML;
+        document.body.innerHTML =
+            "<html><head><title></title></head><body>" +
+            divElements + "</body>";
+        window.print();
+        document.body.innerHTML = oldPage;
+    }
+    function PrintElem(elem) {
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+        mywindow.document.write('<html><head><title>' + document.title + '</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write('<h1>' + document.title + '</h1>');
+        mywindow.document.write(document.getElementById(elem).innerHTML);
+        mywindow.document.write('</body></html>');
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+</script>
+
+    
