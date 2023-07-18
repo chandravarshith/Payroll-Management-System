@@ -1,19 +1,21 @@
 ﻿@model IEnumerable<Payroll_Management_System.Models.Employee>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Employees";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row mt-4 mb-3 mx-3">
     <h1>Manage Employees</h1>
-    <div class="col-lg-7 mt-4">
-        <div class="input-group">
-            <input type="search" placeholder="search employee id" id="form1" class="form-control" style="box-shadow:none;" />
-            <button type="button" class="btn btn-dark" style="box-shadow:none;">
-                <i class="bi bi-search" style="color=white;"></i>
-            </button>
-        </div>
+    <div class="col-lg-7 mt-3">
+        <form id="searchForm" asp-controller="Employees" asp-action="Index" method="get">
+            <div class="input-group">
+                <input type="search" name="searchString" value="@TempData.Peek("searchEmp").ToString()" placeholder="search employee email" id="searchEmp" class="form-control" style="box-shadow:none;" />
+                <button id="searchButton" type="submit" class="btn btn-dark" style="box-shadow:none;">
+                    <i class="bi bi-search" style="color=white;"></i>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -137,14 +139,14 @@
 
 
 <div class="container mx-2">
-    <div class="row">
+    <div class="row mt-5">
         @foreach (var item in Model)
         {
             <div class="col-lg-3 my-3 mx-2 me-5">
-                <div class="card" style="width: 15rem;border-radius:7px;box-shadow:3px 3px 3px 3px grey;">
+                <div class="card" style="width: 15rem;height: 12rem; border-radius:7px;box-shadow:3px 3px 3px 3px grey;">
                     <div class="card-body mx-2">
-                        <h4 class="card-title mb-3">@Html.DisplayFor(modelItem => item.FirstName)&nbsp;@Html.DisplayFor(modelItem => item.LastName)</h4>
-                        <h6 class="card-subtitle mb-4 text-muted">
+                        <h4 class="card-title mb-3">@Html.DisplayFor(modelItem => item.MailId)</h4>
+                        <h6 class="card-subtitle just mb-4 text-muted">
                             @if(item.Status.Equals("Active")){
                                 <i class="bi bi-check-circle-fill me-2" style="color: green;"></i>
                             }
@@ -154,7 +156,7 @@
                             @Html.DisplayFor(modelItem => item.Status)
                         </h6>
                         <a class="w-100 btn btn-dark mx-auto" asp-action="Details" asp-route-id="@item.EmployeeId" style="box-shadow:none;">
-                            <i class="bi bi-eye-fill me-2" style="color=white;"></i>View
+                            <i class="bi bi-eye-fill me-2" style="color:white;"></i>View
                         </a>
                     </div>
                 </div>
@@ -162,3 +164,19 @@
         }
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $("document").ready(function () {
+            $("#searchEmp").change(function () {
+                var searchString = $("#searchEmp").val();
+                if (searchString == "") {
+                    $("#searchButton").click();
+                }
+            });
+        });
+    </script>
+}

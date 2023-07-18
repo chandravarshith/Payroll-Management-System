@@ -1,10 +1,61 @@
 ﻿@model Payroll_Management_System.Models.Level
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Level";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+<div class="row mt-3 d-flex justify-content-center">
+    <div class="col-md-5">
+        <h1 class="fw-bold ls-tight d-flex justify-content-center mt-3">Edit Level @Model.LevelId</h1>
+        <hr />
+        <form enctype="multipart/form-data" asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger small"></div>
+            <input type="hidden" asp-for="LevelId" />
+            <div class="form-floating mt-3">
+                <input asp-for="BasicPay" class="form-control shadow" />
+                <label asp-for="BasicPay"></label>
+                <span asp-validation-for="BasicPay" class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-3">
+                <input asp-for="HouseRentAllowance" class="form-control shadow" />
+                <label asp-for="HouseRentAllowance"></label>
+                <span asp-validation-for="HouseRentAllowance" class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-3">
+                <input asp-for="MedicalAllowance" class="form-control shadow" />
+                <label asp-for="MedicalAllowance"></label>
+                <span asp-validation-for="MedicalAllowance" class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-3">
+                <input asp-for="TaxDeductions" class="form-control shadow" />
+                <label asp-for="TaxDeductions"></label>
+                <span asp-validation-for="TaxDeductions" class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-3">
+                <input asp-for="MonthlyLeavesPermitted" class="form-control shadow" />
+                <label asp-for="MonthlyLeavesPermitted"></label>
+                <span asp-validation-for="MonthlyLeavesPermitted" class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-3">
+                <input asp-for="LossOfPay" class="form-control shadow" />
+                <label asp-for="LossOfPay"></label>
+                <span asp-validation-for="LossOfPay" class="text-danger"></span>
+            </div>
+            <div class="row mt-5 mb-5">
+                <div class="col-lg-6 d-flex justify-content-end">
+                    <input type="submit" value="Update" class="w-50 btn btn-success shadow" />
+                </div>
+                <div class="col-lg-6 d-flex justify-content-start">
+                    <a asp-action="Details" asp-route-id="@Model?.LevelId" class="w-50 btn btn-outline-dark">Back</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@*
 <h1>Edit</h1>
 
 <h4>Level</h4>
@@ -59,6 +110,7 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

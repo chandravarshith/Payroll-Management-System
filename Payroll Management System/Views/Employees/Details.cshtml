@@ -1,10 +1,251 @@
 ﻿@model Payroll_Management_System.Models.Employee
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Employee Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="container mt-2">
+
+    <div class="row mt-3">
+        <div class="card shadow" style="border-radius:7px;">
+            <div class="card-body">
+                <div class="row mx-3">
+                    @if (!User.IsInRole("Administrator"))
+                    {
+                        <div class="col-lg-11">
+                            <h2 class="fw-bold ls-tight d-flex justify-content-start" style="color:darkblue;">Profile</h2>
+                        </div>
+                        <div class="col-lg-1">
+                                <a class="w-75 btn d-flex justify-content-end" title="Edit" style="background-color:blue;" asp-action="Edit" asp-route-id="@Model?.EmployeeId">
+                                    <i class="bi bi-pencil-square" style="color:white;"></i>
+                                </a>
+                        </div>
+                    }
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <div class="col-lg-11">
+                            <h4 class="fw-bold ls-tight d-flex justify-content-start" style="color:darkblue;">Employee Details</h4>
+                        </div>
+                        <div class="col-lg-1">
+                            <a class="w-75 btn btn-danger d-flex justify-content-end" title="Delete User" asp-action="Delete" asp-route-id="@Model?.EmployeeId" onclick="return confirm('Are you sure you want to delete?')">
+                                <i class="bi bi-trash3-fill" style="color:white;"></i>
+                            </a>
+                        </div>
+                    }
+                </div>
+                <hr />
+                <div class="container mx-5">
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.LevelId)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.LevelId)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.FirstName)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.FirstName)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.LastName)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.LastName)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.MailId)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.MailId)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.Address)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.Address)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.City)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.City)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.State)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.State)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.Country)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.Country)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.Zipcode)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.Zipcode)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.Department)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.Department)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.BankName)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.BankName)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.BankAccountNumber)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.BankAccountNumber)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.WorkLocation)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.WorkLocation)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.NumOfLeaves)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.NumOfLeaves)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.Status)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.Status)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-5">
+    @if (User.IsInRole("Administrator"))
+    {
+        <div class="col-lg-4 d-flex justify-content-end">
+            <a class="w-50 btn btn-info me-2" asp-action="PaySlipIndex" asp-route-id="@Model?.EmployeeId">View Payslip Report</a>
+        </div>
+        <div class="col-lg-4 d-flex justify-content-center">
+            <a class="w-50 btn btn-success me-2" asp-action="PaySlip" asp-route-id="@Model?.EmployeeId">Generate Pay Slip</a>
+        </div>
+        <div class="col-lg-4 d-flex justify-content-start">
+            <a asp-action="Index" class="w-50 btn btn-secondary">Back</a>
+        </div>
+    }
+    @*if (!User.IsInRole("Administrator"))
+    {
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-4 d-flex justify-content-center">
+                <a asp-action="Index" asp-controller="Home" class="w-50 btn btn-secondary">Back</a>
+            </div>
+        </div>
+    }*@
+</div>
+
+
+@*
 <div class="mx-4">
     <h1 class="font-weight-bold py-3 my-4">Employee Details</h1>
     <hr />
@@ -112,3 +353,4 @@
     <a class="btn btn-dark me-3" asp-action="PaySlip" asp-route-id="@Model?.EmployeeId">Generate Pay Slip</a>
     <a class="btn btn-outline-dark" asp-action="Index">Back</a>
 </div>
+*@

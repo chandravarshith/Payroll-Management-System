@@ -5,13 +5,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
 
-<h4>Employee</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row d-flex justify-content-center mt-3">
+    <div class="col-md-8">
         <form asp-action="Edit">
+            @if (User.IsInRole("Employee") && Model.FirstName == "")
+            {
+                <h1 class="fw-bold ls-tight d-flex justify-content-center">Please update your Profile</h1>
+            }
+            @if (User.IsInRole("Employee") && Model.FirstName != "")
+            {
+                <h1 class="fw-bold ls-tight d-flex justify-content-center">Edit Profile</h1>
+            }
+            <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="EmployeeId" />
             <input type="hidden" asp-for="UserId" />
@@ -25,96 +31,104 @@
                 <input asp-for="LevelId" class="form-control" />
                 <span asp-validation-for="LevelId" class="text-danger"></span>
             </div>-->
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+            <div class="row mt-2">
+                <div class=col-lg-6>
+                    <div class="form-floating">
+                        <input asp-for="FirstName" class="form-control shadow" />
+                        <label asp-for="FirstName" class="control-label"></label>
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class=col-lg-6>
+                    <div class="form-floating">
+                        <input asp-for="LastName" class="form-control shadow" />
+                        <label asp-for="LastName" class="control-label"></label>
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            <div class="form-floating mt-2">
+                <input asp-for="MailId" class="form-control shadow" readonly />
                 <label asp-for="MailId" class="control-label"></label>
-                <input asp-for="MailId" class="form-control" />
                 <span asp-validation-for="MailId" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-floating mt-2">
+                <input asp-for="Address" class="form-control shadow" />
                 <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
+            <div class="row mt-2">
+                <div class=col-lg-6>
+                    <div class="form-floating">
+                        <input asp-for="City" class="form-control shadow" />
+                        <label asp-for="Country" class="control-label"></label>
+                        <span asp-validation-for="Country" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class=col-lg-6>
+                    <div class="form-floating">
+                        <input asp-for="State" class="form-control shadow" />
+                        <label asp-for="State" class="control-label"></label>
+                        <span asp-validation-for="State" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="State" class="control-label"></label>
-                <input asp-for="State" class="form-control" />
-                <span asp-validation-for="State" class="text-danger"></span>
+            <div class="row mt-2">
+                <div class=col-lg-6>
+                    <div class="form-floating">
+                        <input asp-for="Country" class="form-control shadow" />
+                        <label asp-for="Country" class="control-label"></label>
+                        <span asp-validation-for="Country" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class=col-lg-6>
+                    <div class="form-floating">
+                        <input asp-for="Zipcode" class="form-control shadow" />
+                        <label asp-for="Zipcode"></label>
+                        <span asp-validation-for="Zipcode" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Country" class="control-label"></label>
-                <input asp-for="Country" class="form-control" />
-                <span asp-validation-for="Country" class="text-danger"></span>
+            <div class="row mt-2">
+                <div class=col-lg-6>
+                    <div class="form-floating">
+                        <input asp-for="BankName" class="form-control shadow" />
+                        <label asp-for="BankName" class="control-label"></label>
+                        <span asp-validation-for="BankName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class=col-lg-6>
+                    <div class="form-floating">
+                        <input asp-for="BankAccountNumber" class="form-control shadow" />
+                        <label asp-for="BankAccountNumber" ></label>
+                        <span asp-validation-for="BankAccountNumber" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Pincode" class="control-label"></label>
-                <input asp-for="Pincode" class="form-control" />
-                <span asp-validation-for="Pincode" class="text-danger"></span>
-            </div>
-            <!--<div class="form-group">
-                <label asp-for="Department" class="control-label"></label>
-                <input asp-for="Department" class="form-control" />
-                <span asp-validation-for="Department" class="text-danger"></span>
-            </div>-->
-            <div class="form-group">
-                <label asp-for="BankName" class="control-label"></label>
-                <input asp-for="BankName" class="form-control" />
-                <span asp-validation-for="BankName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BankAccountNumber" class="control-label"></label>
-                <input asp-for="BankAccountNumber" class="form-control" />
-                <span asp-validation-for="BankAccountNumber" class="text-danger"></span>
-            </div>
-            <!--<div class="form-group">
-                <label asp-for="WorkLocation" class="control-label"></label>
-                <input asp-for="WorkLocation" class="form-control" />
-                <span asp-validation-for="WorkLocation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                 <label asp-for="NumOfLeaves" class="control-label"></label>
-                 <input asp-for="NumOfLeaves" class="form-control" />
-                 <span asp-validation-for="NumOfLeaves" class="text-danger"></span>
-             </div>
-             <div class="form-group">
-                 <label asp-for="LeaveDeduction" class="control-label"></label>
-                 <input asp-for="LeaveDeduction" class="form-control" />
-                 <span asp-validation-for="LeaveDeduction" class="text-danger"></span>
-             </div>
-             <div class="form-group">
-                 <label asp-for="Salary" class="control-label"></label>
-                 <input asp-for="Salary" class="form-control" />
-                 <span asp-validation-for="Salary" class="text-danger"></span>
-             </div>
-             <div class="form-group">
-                 <label asp-for="Status" class="control-label"></label>
-                 <input asp-for="Status" class="form-control" />
-                 <span asp-validation-for="Status" class="text-danger"></span>
-              </div>-->
-            <div class="form-group my-3">
-                <input type="submit" value="Save" class="btn btn-dark" />
-            </div>
+            @if(User.IsInRole("Employee") && Model.FirstName != "")
+            {
+                <div class="row mt-5">
+                    <div class="col-lg-6 d-flex justify-content-end">
+                        <input type="submit" value="Save" class="w-50 btn btn-success" />
+                    </div>
+                    <div class="col-lg-6 d-flex justify-content-start">
+                        <a asp-action="Details" class="w-50 btn btn-outline-dark" asp-route-id="@Model.EmployeeId">Back</a>
+                    </div>
+                </div>
+            }
+            @if(User.IsInRole("Employee") && Model.FirstName == "")
+            { 
+                <div class="row mt-5">
+                    <div class="col-lg-12 d-flex justify-content-center">
+                        <input type="submit" value="Save" class="w-25 btn btn-success" />
+                    </div>
+                </div>
+            }
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

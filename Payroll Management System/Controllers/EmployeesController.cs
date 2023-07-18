@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -19,11 +21,26 @@ namespace Payroll_Management_System.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Administrator")]
         // GET: Employees
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-              return _context.Employee != null ? 
-                          View(await _context.Employee.ToListAsync()) :
+            if (searchString != null)
+            {
+                TempData["searchEmp"] = searchString;
+            }
+            else
+            {
+                TempData["searchEmp"] = "";
+            }
+            var emps = await _context.Employee.ToListAsync();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                emps = await _context.Employee.Where(x => x.MailId.Contains(searchString)).ToListAsync();
+            }
+
+            return _context.Employee != null ?
+                          View(emps) :
                           Problem("Entity set 'PmsDataContext.Employee'  is null.");
         }
 
@@ -40,6 +57,11 @@ namespace Payroll_Management_System.Controllers
             if (employee == null)
             {
                 return NotFound();
+            }
+
+            if(employee.FirstName == "")
+            {
+                return RedirectToAction("Edit", "Employees", new { id = employee.EmployeeId });
             }
 
             return View(employee);
@@ -59,8 +81,6 @@ namespace Payroll_Management_System.Controllers
         }
 
         // POST: Employees/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Employee employee)
@@ -77,7 +97,7 @@ namespace Payroll_Management_System.Controllers
                 employee.City = "";
                 employee.State = "";
                 employee.Country = "";
-                employee.Pincode = "";
+                employee.Zipcode = "";
                 employee.BankName = "";
                 employee.BankAccountNumber = "";
             }
@@ -115,8 +135,8 @@ namespace Payroll_Management_System.Controllers
                 return NotFound();
             }
 
-          //  if (ModelState.IsValid)
-          //  {
+            if (employee != null)
+            {
                 try
                 {
                     _context.Update(employee);
@@ -136,29 +156,39 @@ namespace Payroll_Management_System.Controllers
                 if (User.IsInRole("Employee"))
                     return RedirectToAction("Index", "Home");
                 return RedirectToAction(nameof(Index));
-           // }
+            }
             return View(employee);
         }
 
-        // GET: Employees/Delete/5
+        //Employees/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Employee == null)
+            if (_context.Employee == null)
             {
-                return NotFound();
+                return Problem("Entity set 'PmsDataContext.Employee'  is null.");
+            }
+            var employee = await _context.Employee.FindAsync(id);
+            if (employee != null)
+            {
+                _context.Employee.Remove(employee);
             }
 
-            var employee = await _context.Employee
-                .FirstOrDefaultAsync(m => m.EmployeeId == id);
-            if (employee == null)
+            var pendingLeaves = await _context.Leave
+                .Where(x => x.EmployeeId == id && x.LeaveStatus == "Pending for approval")
+                .ToListAsync();
+            if(pendingLeaves != null)
             {
-                return NotFound();
+                foreach(var leave in pendingLeaves)
+                {
+                    _context.Leave.Remove(leave);
+                }
             }
 
-            return View(employee);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
-        // POST: Employees/Delete/5
+        /* POST: Employees/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -176,6 +206,7 @@ namespace Payroll_Management_System.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        */
 
         public async Task<IActionResult> PaySlip(int? id)
         {
@@ -197,7 +228,14 @@ namespace Payroll_Management_System.Controllers
             {
                 return NotFound();
             }
-
+            if (employeePaySlip.Emp != null)
+            {
+                var monthYear = DateTime.Now.ToString("MMMM") + " " + DateTime.Now.Year.ToString()+ " "+ employeePaySlip.Emp.EmployeeId; 
+                
+                employeePaySlip.PaySlip = await _context.Payslip
+                .Where(x => x.EmployeeId == employeePaySlip.Emp.EmployeeId && x.Id == monthYear)
+                .FirstOrDefaultAsync();
+            }
             return View(employeePaySlip);
         }
 
@@ -218,7 +256,9 @@ namespace Payroll_Management_System.Controllers
             }
 
             employeePaySlip.PaySlip.EmployeeId = id;
-            employeePaySlip.PaySlip.Id = employeePaySlip.PaySlip.Month + employeePaySlip.PaySlip.Year; // or year+month
+            employeePaySlip.PaySlip.Id = employeePaySlip.PaySlip.Month + " " 
+                +employeePaySlip.PaySlip.Year + " "
+                + employeePaySlip.PaySlip.EmployeeId; // or march2022
             employeePaySlip.PaySlip.LeaveDeduction = 0.0;
             if (employeePaySlip.Emp.NumOfLeaves > employeePaySlip.EmpLevel.MonthlyLeavesPermitted)
             {
@@ -240,6 +280,10 @@ namespace Payroll_Management_System.Controllers
             _context.Add(employeePaySlip.PaySlip);
             await _context.SaveChangesAsync();
 
+            employeePaySlip.Emp.NumOfLeaves = 0;
+            _context.Update(employeePaySlip.Emp);
+            await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -252,9 +296,21 @@ namespace Payroll_Management_System.Controllers
             }
 
             var tempStack = payslipStack.Where(p => p.EmployeeId == id);
+            if (id == null && User.IsInRole("Employee"))
+            {
+                var emp = await _context.Employee
+                    .Where(x => x.MailId == User.Identity.Name.ToString())
+                    .FirstOrDefaultAsync();
+                if (emp == null)
+                {
+                    return NotFound();
+                }
+                id = emp.EmployeeId;
+                tempStack = payslipStack.Where(p => p.EmployeeId == id);
+            }
             if (tempStack == null)
             {
-                return NotFound();
+                 return NotFound();
             }
 
             payslipStack = tempStack.ToList();
@@ -262,6 +318,65 @@ namespace Payroll_Management_System.Controllers
             return _context.Payslip != null ?
                         View(payslipStack) :
                         Problem("Entity set 'PmsDataContext.Payslip'  is null.");
+        }
+
+        public async Task<IActionResult> GeneratePaySlip(int? id, string searchString)
+        {
+            if (searchString != null)
+            {
+                TempData["searchMonth"] = searchString;
+            }
+            
+
+            if (_context.Employee == null)
+            {
+                return NotFound();
+            }
+            EmployeePaySlip eps = new EmployeePaySlip();
+            if (id == null && User.IsInRole("Employee"))
+            {
+                eps.Emp = await _context.Employee.Where(x => x.MailId == User.Identity.Name.ToString())
+                    .FirstOrDefaultAsync();
+            }
+            else {
+                eps.Emp = await _context.Employee.Where(x => x.EmployeeId == id)
+                    .FirstOrDefaultAsync();
+            }
+
+            if(eps.Emp != null)
+            {
+                if(searchString == null)
+                {
+                    searchString = DateTime.Now.ToString("MMMM") + " " + DateTime.Now.Year.ToString() + " " +eps.Emp.EmployeeId;
+                    TempData["searchMonth"] = searchString;
+                }
+                IEnumerable<Payslip> payStack = await _context.Payslip
+                    .Where(x => x.EmployeeId == eps.Emp.EmployeeId)
+                    .ToListAsync();
+
+                ViewBag.payStack = payStack;
+                eps.Emp.FullName = eps.Emp.FirstName + " " + eps.Emp.LastName;
+                eps.EmpLevel = await _context.Level.Where(x => x.LevelId == eps.Emp.LevelId)
+                    .FirstOrDefaultAsync();
+            }
+
+            //DateTime now = DateTime.Now;
+            //var monthYear = now.ToString("MMMM") + now.Year.ToString();
+            //monthYear = "December2022";
+            eps.PaySlip = await _context.Payslip
+                .Where(x => x.EmployeeId == eps.Emp.EmployeeId && x.Id == searchString)
+                .FirstOrDefaultAsync();
+
+            if(eps.PaySlip != null)
+            {
+                eps.GrossSalary = eps.EmpLevel.BasicPay
+                                            + eps.PaySlip.TotalAllowance
+                                            + eps.PaySlip.Bonus;
+
+                eps.Deductions = eps.EmpLevel.TaxDeductions + eps.PaySlip.LeaveDeduction;
+            }
+
+            return View(eps);
         }
 
         private bool EmployeeExists(int id)

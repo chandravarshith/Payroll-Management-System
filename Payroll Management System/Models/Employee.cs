@@ -22,6 +22,9 @@ namespace Payroll_Management_System.Models
         [DisplayName("Last Name")]
         public string LastName { get; set; }
 
+        [NotMapped]
+        public string FullName { get; set; }
+
         [DisplayName("Mail Id")]
         public string MailId { get; set; }
 
@@ -33,7 +36,7 @@ namespace Payroll_Management_System.Models
 
         public string Country { get; set; }
 
-        public string Pincode { get; set; }
+        public string Zipcode { get; set; }
 
         public string Department { get; set; }
 

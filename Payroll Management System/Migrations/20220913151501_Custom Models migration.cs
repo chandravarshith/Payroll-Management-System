@@ -55,7 +55,7 @@ namespace Payroll_Management_System.Migrations
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     State = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Pincode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Zipcode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Department = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BankName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BankAccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -87,6 +87,7 @@ namespace Payroll_Management_System.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    EmployeeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LeaveStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NumOfDays = table.Column<int>(type: "int", nullable: false),

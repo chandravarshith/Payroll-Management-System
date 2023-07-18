@@ -1,0 +1,266 @@
+﻿@model Payroll_Management_System.Models.EmployeePaySlip
+
+@{
+    ViewData["Title"] = "Employee Pay Slip";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt-3">
+    <div class="col-lg-10">
+        <h1 id="Heading">Pay Slip</h1>
+    </div>
+    <div class="col-lg-2">
+        <div class="mt-4 me-5">
+            <button class="btn btn-dark" type="button" onclick="JavaScript:printReport('print');">
+                <i class="bi bi-printer-fill" style="color:white;"></i>  Print
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-2 mb-3 mx-3 ">
+    <div class="col-lg-7">
+        <form id="searchForm" asp-controller="Employees" asp-action="GeneratePaySlip" method="get">
+            <div class="form-group">
+                <label class="control-control-sm" style="color:grey;">&nbsp;Choose month:</label>
+                <select id="searchMonth" class="form-select" name="searchString" asp-items="@(new SelectList((System.Collections.IEnumerable)ViewBag.payStack, "Id", "Id"))">
+                    <option value="@TempData.Peek("searchMonth").ToString()">@TempData.Peek("searchMonth").ToString()</option>
+                </select>
+                @*<input type="number" name="searchString"
+                       value="@TempData.Peek("searchMonth").ToString()"
+                       placeholder="search level number" id="searchMonth" 
+                    class="form-control" style="box-shadow:none;" />  *@              
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model.PaySlip != null)
+{
+    <div id="print">
+        <div class="container mt-2">
+            <div class="row mt-3">
+                <div class="card shadow" style="border-radius:7px;">
+                    <div class="card-body">
+                        <div class="row mx-3">
+                            <h4 class="fw-bold ls-tight d-flex justify-content-start" style="color:darkblue;">Employee Details</h4>
+                        </div>
+                        <hr />
+                        <div class="container mx-5">
+                            <div class="row mt-3">
+                                <div class="col-lg-6">
+                                    <p class="card-text fw-bold">
+                                        @Html.DisplayNameFor(model => model.Emp.EmployeeId)
+                                    </p>
+                                </div>
+                                <div class="col-lg-6">
+                                    <p class="card-text">
+                                        @Html.DisplayFor(model => model.Emp.EmployeeId)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-lg-6">
+                                    <p class="card-text fw-bold">
+                                        @Html.DisplayNameFor(model => model.Emp.FullName)
+                                    </p>
+                                </div>
+                                <div class="col-lg-6">
+                                    <p class="card-text">
+                                        @Html.DisplayFor(model => model.Emp.FullName)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-lg-6">
+                                    <p class="card-text fw-bold">
+                                        @Html.DisplayNameFor(model => model.Emp.MailId)
+                                    </p>
+                                </div>
+                                <div class="col-lg-6">
+                                    <p class="card-text">
+                                        @Html.DisplayFor(model => model.Emp.MailId)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-lg-6">
+                                    <p class="card-text fw-bold">
+                                        @Html.DisplayNameFor(model => model.Emp.Department)
+                                    </p>
+                                </div>
+                                <div class="col-lg-6">
+                                    <p class="card-text">
+                                        @Html.DisplayFor(model => model.Emp.Department)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-lg-6">
+                                    <p class="card-text fw-bold">
+                                        @Html.DisplayNameFor(model => model.Emp.BankName)
+                                    </p>
+                                </div>
+                                <div class="col-lg-6">
+                                    <p class="card-text">
+                                        @Html.DisplayFor(model => model.Emp.BankName)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-lg-6">
+                                    <p class="card-text fw-bold">
+                                        @Html.DisplayNameFor(model => model.Emp.BankAccountNumber)
+                                    </p>
+                                </div>
+                                <div class="col-lg-6">
+                                    <p class="card-text">
+                                        @Html.DisplayFor(model => model.Emp.BankAccountNumber)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-lg-6">
+                                    <p class="card-text fw-bold">
+                                        @Html.DisplayNameFor(model => model.Emp.WorkLocation)
+                                    </p>
+                                </div>
+                                <div class="col-lg-6">
+                                    <p class="card-text">
+                                        @Html.DisplayFor(model => model.Emp.WorkLocation)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-2">
+            <div class="row">
+                <div class="card shadow" style="border-radius:7px;">
+                    <div class="card-body">
+                        <div class="row mx-3">
+                            <h4 class="fw-bold ls-tight d-flex justify-content-start" style="color:darkblue;">Salary Details</h4>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <table class="table table-bordered mt-2">
+                                    <tbody>
+                                        <tr>
+                                            <th>@Html.DisplayNameFor(modelItem => Model.EmpLevel.BasicPay)</th>
+                                            <td>@Html.DisplayFor(modelItem => Model.EmpLevel.BasicPay)</td>
+                                        </tr>
+                                        <tr>
+                                            <th>@Html.DisplayNameFor(modelItem => Model.EmpLevel.HouseRentAllowance)</th>
+                                            <td>@Html.DisplayFor(modelItem => Model.EmpLevel.HouseRentAllowance)</td>
+                                        </tr>
+                                        <tr>
+                                            <th>@Html.DisplayNameFor(modelItem => Model.EmpLevel.MedicalAllowance)</th>
+                                            <td>@Html.DisplayFor(modelItem => Model.EmpLevel.MedicalAllowance)</td>
+                                        </tr>
+                                        <tr>
+                                            <th>@Html.DisplayNameFor(modelItem => Model.EmpLevel.TravelAllowance)</th>
+                                            <td>@Html.DisplayFor(modelItem => Model.EmpLevel.TravelAllowance)</td>
+                                        </tr>
+                                        <tr>
+                                            <th>@Html.DisplayNameFor(modelItem => Model.PaySlip.Bonus)</th>
+                                            <td>@Html.DisplayFor(modelItem => Model.PaySlip.Bonus)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-lg-6">
+                                <table class="table table-bordered mt-2">
+                                    <tbody>
+                                        <tr>
+                                            <th>@Html.DisplayNameFor(modelItem => Model.EmpLevel.TaxDeductions)</th>
+                                            <td>@Html.DisplayFor(modelItem => Model.EmpLevel.TaxDeductions)</td>
+                                        </tr>
+                                        <tr>
+                                            <th>@Html.DisplayNameFor(modelItem => Model.PaySlip.LeaveDeduction)</th>
+                                            <td>@Html.DisplayFor(modelItem => Model.PaySlip.LeaveDeduction)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <table class="table table-bordered mt-1">
+                                    <tbody>
+                                        <tr>
+                                            <th>@Html.DisplayNameFor(modelItem => Model.GrossSalary)</th>
+                                            <td>@Html.DisplayFor(modelItem => Model.GrossSalary)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-lg-6">
+                                <table class="table table-bordered mt-1">
+                                    <tbody>
+                                        <tr>
+                                            <th>@Html.DisplayNameFor(modelItem => Model.Deductions)</th>
+                                            <td>@Html.DisplayFor(modelItem => Model.Deductions)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table class="table table-bordered mt-3">
+                                    <tbody>
+                                        <tr>
+                                            <th>@Html.DisplayNameFor(modelItem => Model.PaySlip.Salary)</th>
+                                            <td>@Html.DisplayFor(modelItem => Model.PaySlip.Salary)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else{
+    <div class="container mt-2">
+        <div class="row mt-3">
+            <div class="card shadow" style="border-radius:7px;">
+                <div class="card-body">
+                    <div class="row mx-3">
+                        <h5 class="fw-bold ls-tight d-flex justify-content-center" style="color:darkslategrey;">
+                            Pay Slip for the selected month is not yet generated.
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+
+    <script language="javascript" type="text/javascript">
+        function printReport(strid) {
+            var divElements = document.getElementById(strid).innerHTML;
+            var heading = document.getElementById("Heading").innerHTML;
+            var oldPage = document.body.innerHTML;
+            document.body.innerHTML = '<h3>' + heading + '</h3>' + divElements;
+            window.print();
+            document.body.innerHTML = oldPage;
+        }
+    </script>
+    <script>
+        $("document").ready(function () {
+            $("#searchMonth").change(function () {
+                $("#searchForm").submit();
+            });
+        });
+    </script>
+}
+
+    

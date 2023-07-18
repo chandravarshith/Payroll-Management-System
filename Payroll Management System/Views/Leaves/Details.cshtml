@@ -5,6 +5,118 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+
+@if(User.IsInRole("Administrator")){
+    <div class="container mt-2">
+
+        <div class="row mt-3">
+            <div class="card shadow" style="border-radius:7px;">
+                <div class="card-body">
+                    <div class="row mx-3">
+                        <h4 class="fw-bold ls-tight d-flex justify-content-start" style="color:darkblue;">Leave Details</h4>                       
+                    </div>
+                    <hr />
+                    <div class="container mx-5">
+                        <div class="row mt-3">
+                            <div class="col-lg-6">
+                                <p class="card-text fw-bold">
+                                    @Html.DisplayNameFor(model => model.EmployeeId)
+                                </p>
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="card-text">
+                                    @Html.DisplayFor(model => model.EmployeeId)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-lg-6">
+                                <p class="card-text fw-bold">
+                                    @Html.DisplayNameFor(model => model.EmployeeName)
+                                </p>
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="card-text">
+                                    @Html.DisplayFor(model => model.EmployeeName)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-lg-6">
+                                <p class="card-text fw-bold">
+                                    @Html.DisplayNameFor(model => model.Reason)
+                                </p>
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="card-text">
+                                    @Html.DisplayFor(model => model.Reason)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-lg-6">
+                                <p class="card-text fw-bold">
+                                    @Html.DisplayNameFor(model => model.Date)
+                                </p>
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="card-text">
+                                    @Html.DisplayFor(model => model.Date)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-lg-6">
+                                <p class="card-text fw-bold">
+                                    @Html.DisplayNameFor(model => model.NumOfDays)
+                                </p>
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="card-text">
+                                    @Html.DisplayFor(model => model.NumOfDays)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-lg-6">
+                                <p class="card-text fw-bold">
+                                    @Html.DisplayNameFor(model => model.LeaveStatus)
+                                </p>
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="card-text">
+                                    @Html.DisplayFor(model => model.LeaveStatus)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (Model.LeaveStatus == "Pending for approval")
+    {
+        <div class="row d-flex justify-content-center mt-5 mb-4">
+            <div class="col-lg-4 d-flex justify-content-end">
+                <a class="w-50 btn btn-success me-2" asp-action="ApproveOrReject" asp-route-id="@Model.Id" asp-route-status="Approved" onclick="return confirm('Are you sure you want to Approve the leave?')">Approve</a>
+            </div>
+            <div class="col-lg-4 d-flex justify-content-center">
+                <a class="w-50 btn btn-danger me-2" asp-action="ApproveOrReject" asp-route-id="@Model.Id" asp-route-status="Rejected" onclick="return confirm('Are you sure you want to Reject the leave?')">Reject</a>
+            </div>
+            <div class="col-lg-4 d-flex justify-content-start">
+                <a asp-action="Index" class="w-50 btn btn-secondary">Back</a>
+            </div>
+        </div>
+    }
+    else{
+        <div class="row d-flex justify-content-center mt-5 mb-4">
+            <a asp-action="Index" class="w-25 btn btn-secondary">Back</a>
+        </div>
+    }
+}
+
+else{
 <h1>Details</h1>
 
 <div>
@@ -47,3 +159,4 @@
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+}

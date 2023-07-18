@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Payroll_Management_System.Models
 {
@@ -19,8 +21,11 @@ namespace Payroll_Management_System.Models
         public string Date { get; set; }
 
         [DisplayName("Number of Days")]
+        [Range(1, 10, ErrorMessage = "Please a enter a value only in between 1 to 10!")]
         public int NumOfDays { get; set; }
 
         public string Reason { get; set; }
+
+        public string? EmployeeName { get; set; }
     }
 }

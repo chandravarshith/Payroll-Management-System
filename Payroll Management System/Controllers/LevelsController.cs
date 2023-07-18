@@ -20,10 +20,25 @@ namespace Payroll_Management_System.Controllers
         }
 
         // GET: Levels
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-              return _context.Level != null ? 
-                          View(await _context.Level.ToListAsync()) :
+            if (searchString != null)
+            {
+                TempData["searchLevel"] = searchString;
+            }
+            else
+            {
+                TempData["searchLevel"] = "";
+            }
+
+            var levels = await _context.Level.ToListAsync();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                levels = await _context.Level.Where(x => x.LevelId.ToString() == searchString).ToListAsync();
+            }
+
+            return _context.Level != null ? 
+                          View(levels) :
                           Problem("Entity set 'PmsDataContext.Level'  is null.");
         }
 
@@ -96,7 +111,7 @@ namespace Payroll_Management_System.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (level != null)
             {
                 try
                 {
@@ -114,30 +129,29 @@ namespace Payroll_Management_System.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id = level.LevelId });
             }
             return View(level);
         }
 
-        // GET: Levels/Delete/5
+        //Levels/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Level == null)
+            if (_context.Level == null)
             {
-                return NotFound();
+                return Problem("Entity set 'PmsDataContext.Level'  is null.");
+            }
+            var level = await _context.Level.FindAsync(id);
+            if (level != null)
+            {
+                _context.Level.Remove(level);
             }
 
-            var level = await _context.Level
-                .FirstOrDefaultAsync(m => m.LevelId == id);
-            if (level == null)
-            {
-                return NotFound();
-            }
-
-            return View(level);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
-        // POST: Levels/Delete/5
+        /* POST: Levels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -155,6 +169,7 @@ namespace Payroll_Management_System.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        */
 
         private bool LevelExists(int id)
         {

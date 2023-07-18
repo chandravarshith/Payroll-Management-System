@@ -23,8 +23,19 @@ namespace Payroll_Management_System.Controllers
         public async Task<IActionResult> Index()
         {
               return _context.Leave != null ? 
-                          View(await _context.Leave.ToListAsync()) :
+                          View(await _context.Leave
+                          .Where(x => x.LeaveStatus == "Pending for approval")
+                          .ToListAsync()) :
                           Problem("Entity set 'PmsDataContext.Leave'  is null.");
+        }
+
+        public async Task<IActionResult> LeavesReport()
+        {
+            return _context.Leave != null ?
+                        View(await _context.Leave
+                          .Where(x => x.LeaveStatus != "Pending for approval")
+                          .ToListAsync()) :
+                        Problem("Entity set 'PmsDataContext.Leave'  is null.");
         }
 
         // GET: Leaves/Details/5
@@ -41,7 +52,6 @@ namespace Payroll_Management_System.Controllers
             {
                 return NotFound();
             }
-
             return View(leave);
         }
 
@@ -54,7 +64,7 @@ namespace Payroll_Management_System.Controllers
         // POST: Leaves/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,EmployeeId,LeaveStatus,Date,NumOfDays,Reason")] Leave leave)
+        public async Task<IActionResult> Create(Leave leave)
         {
             string email = User.Identity.Name;
             Employee emp = await _context.Employee.FirstOrDefaultAsync(m => m.MailId.Equals(email));
@@ -63,6 +73,7 @@ namespace Payroll_Management_System.Controllers
                 return NotFound();
             }
             leave.EmployeeId = emp.EmployeeId;
+            leave.EmployeeName = emp.FirstName + " " + emp.LastName;
 
             if (leave.LeaveStatus == null)
             {
@@ -100,7 +111,7 @@ namespace Payroll_Management_System.Controllers
         // POST: Leaves/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,EmployeeId,LeaveStatus,Date,NumOfDays,Reason")] Leave leave)
+        public async Task<IActionResult> Edit(int id, Leave leave)
         {
             if (id != leave.Id)
             {
@@ -172,55 +183,19 @@ namespace Payroll_Management_System.Controllers
           return (_context.Leave?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        public async Task<IActionResult> Approve(int? id)
-        {
-            if (id == null || _context.Leave == null)
-            {
-                return NotFound();
-            }
-
-            var leave = await _context.Leave
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (leave == null)
-            {
-                return NotFound();
-            }
-
-            return View(leave);
-        }
-
-        public async Task<IActionResult> Reject(int? id)
-        {
-            if (id == null || _context.Leave == null)
-            {
-                return NotFound();
-            }
-
-            var leave = await _context.Leave
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (leave == null)
-            {
-                return NotFound();
-            }
-
-            return View(leave);
-        }
-
-        [HttpPost, ActionName("Approve")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ApproveConfirmed(int id)
+        public async Task<IActionResult> ApproveOrReject(int? id, string? status)
         {
             if (_context.Leave == null)
             {
                 return Problem("Entity set 'PmsDataContext.Leave'  is null.");
             }
             var leave = await _context.Leave.FindAsync(id);
-            if (leave != null)
+            if (leave == null)
             {
                 return NotFound();
             }
-
-            leave.LeaveStatus = "Approved";
+            
+            leave.LeaveStatus = status;
 
             try
             {
@@ -238,42 +213,8 @@ namespace Payroll_Management_System.Controllers
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), new { id = id });
         }
 
-        [HttpPost, ActionName("Reject")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RejectConfirmed(int id)
-        {
-            if (_context.Leave == null)
-            {
-                return Problem("Entity set 'PmsDataContext.Leave'  is null.");
-            }
-            var leave = await _context.Leave.FindAsync(id);
-            if (leave != null)
-            {
-                return NotFound();
-            }
-
-            leave.LeaveStatus = "Rejected";
-
-            try
-            {
-                _context.Update(leave);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LeaveExists(leave.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return RedirectToAction(nameof(Index));
-        }
     }
 }

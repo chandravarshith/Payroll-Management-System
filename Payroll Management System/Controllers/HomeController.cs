@@ -31,8 +31,8 @@ namespace Payroll_Management_System.Controllers
         public async Task<IActionResult> EmployeeHome()
         {
             var employee = await _context.Employee
-                        .FirstOrDefaultAsync(m => m.MailId == TempData.Peek("LoginEmpMailId").ToString());
-            if(employee == null)
+                .FirstOrDefaultAsync(m => m.MailId == User.Identity.Name.ToString());
+            if (employee == null)
             {
                 return NotFound();
             }
@@ -40,15 +40,18 @@ namespace Payroll_Management_System.Controllers
             {
                 return RedirectToAction("Edit", "Employees", new { id = employee.EmployeeId });
             }
-            return View();
+            return RedirectToAction("Details", "Employees", new { id = employee.EmployeeId });
+            
         }
 
         public IActionResult Index()
         {
-            if (User.IsInRole("Administrator"))
-                return View("AdminHome");
             if (User.IsInRole("Employee"))
-                return RedirectToAction("EmployeeHome","Home");
+            {
+                return RedirectToAction("EmployeeHome");
+            }
+            if (User.IsInRole("Administrator")) 
+                return RedirectToAction("Index","Employees");
             return View();
         }
 

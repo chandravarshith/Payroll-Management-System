@@ -32,21 +32,42 @@
                 </div>
 
                 <ul class="list-unstyled components">
-                    <li >
-                        <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li>
-                        <a asp-area="" asp-controller="Levels" asp-action="Index">Level</a>
-                    </li>
-                    <li>
-                        <a asp-area="" asp-controller="Leaves" asp-action="Index">Leaves</a>
-                    </li>
-                    <li>
-                        <a asp-area="" asp-controller="Employees" asp-action="Index">Employee</a>
-                    </li>
-                    <li>
-                        <a id="register" asp-area="Identity" asp-page="/Account/Register">Add User</a>
-                    </li>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        @*<li>
+                            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>*@
+                        <li>
+                            <a asp-area="" asp-controller="Levels" asp-action="Index">Level</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Leaves" asp-action="Index">Leaves</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Employees" asp-action="Index">Employee</a>
+                        </li>
+                        <li>
+                            <a id="register" asp-area="Identity" asp-page="/Account/Register">Add User</a>
+                        </li>
+                    }
+                    @if(User.IsInRole("Employee"))
+                    {
+                        <li>
+                            <a asp-area="" asp-controller="Home" asp-action="Index">Profile</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Leaves" asp-action="Index">Apply Leaves</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Leaves" asp-action="LeavesReport">Leaves Report</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Employees" asp-action="PaySlipIndex">Salary Report</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Employees" asp-action="GeneratePaySlip">Pay Slip</a>
+                        </li>
+                    }
                 </ul>
 
                 <ul class="list-unstyled CTAs">

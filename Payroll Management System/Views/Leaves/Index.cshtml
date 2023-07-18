@@ -1,65 +1,125 @@
 ﻿@model IEnumerable<Payroll_Management_System.Models.Leave>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Leaves";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @if(User.IsInRole("Administrator")){
-    
-    <h1 class="mt-3">Pending Leaves</h1>
-    
-    <table class="table mt-4">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.EmployeeId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Date)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.NumOfDays)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Reason)
-                </th>
-                <th>
-                    <label>Action</label>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
+
+    <div class="container mt-4 mb-5">
+        <h1 class="fw-bold my-3 ls-tight d-flex justify-content-start">Pending Leaves</h1>
+        @if(Model.Count() == 0){
+            <div class="container mt-2">
+                <div class="row mt-3">
+                    <div class="card shadow" style="border-radius:7px;">
+                        <div class="card-body">
+                            <div class="row mx-3">
+                                <h5 class="fw-bold ls-tight d-flex justify-content-center" style="color:darkslategrey;">
+                                    No active leave requests.
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else{
             @foreach (var item in Model)
             {
-                @if (item.LeaveStatus.Equals("Pending for approval"))
-                {
-                    
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EmployeeId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Date)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NumOfDays)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Reason)
-                        </td>
-                        <td>
-                            <a class="btn btn-success me-2" asp-action="Approve" asp-route-id="@item.Id">Approve</a>
-                            <a class="btn btn-danger" asp-action="Reject" asp-route-id="@item.Id">Reject</a>
-                        </td>
-                    </tr>
-                }
+                <div class="row d-flex justify-content-center mt-5">
+                    <div class="col-lg-12">
+                        <div class="card shadow" style="border-radius:7px;background-color:#F4F6F7;">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-4 my-auto d-flex justify-content-center">
+                                        <h5 class="card-title fw-bold ls-tight" title="Employee Name">@item.EmployeeName</h5>
+                                    </div>
+                                    <div class="col-lg-2 my-auto d-flex justify-content-center">
+                                        <h6 class="card-subtitle fw-bold ls-tight" title="Reason" style="color:darkslategrey">@item.Reason</h6>
+                                    </div>
+                                    <div class="col-lg-2 my-auto d-flex justify-content-center">
+                                        <h6 class="card-subtitle fw-bold ls-tight" title="Date" style="color: darkslategrey">@item.Date</h6>
+                                    </div>
+                                    <div class="col-lg-2 my-auto d-flex justify-content-center">
+                                        <h6 class="card-subtitle fw-bold ls-tight" title="Number of Days" style="color: darkslategrey">@item.NumOfDays</h6>
+                                    </div>
+                                    <div class="col-lg-2 my-auto d-flex justify-content-center">
+                                        <a class="w-50 btn" title="Approve/Reject" style="background-color:black;" asp-action="Details" asp-route-id="@item.Id">
+                                            <i class="bi bi-box-arrow-in-up-right" style="color:white;"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             }
-        </tbody>
-    </table>
+        }
+        
+    </div>
 }
 else if(User.IsInRole("Employee")){
+    <div class="row mt-3 mb-5 mx-3 ">
+        <div class="col-lg-9 mt-3">
+            <h1 class="fw-bold ls-tight">Leaves</h1>
+        </div>        
+        <div class="col-lg-3 mt-3">
+            <a class="btn btn-dark d-flex justify-content-center" style="box-shadow:none;" asp-action="Create">
+                <i class="bi bi-box-arrow-in-up-right me-2" style="color:white;"></i>Apply Leave
+            </a>
+        </div>
+    </div>
 
+    <div class="container">
+        @if (Model.Count() == 0)
+        {
+            <div class="container mt-2">
+                <div class="row mt-3">
+                    <div class="card shadow" style="border-radius:7px;">
+                        <div class="card-body">
+                            <div class="row mx-3">
+                                <h5 class="fw-bold ls-tight d-flex justify-content-center" style="color:darkslategrey;">
+                                    No active leave requests.
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            @foreach (var item in Model) {
+                <div class="card shadow mt-3" style="border-radius:7px;">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-4 my-auto d-flex justify-content-center">
+                                <h5 class="card-title fw-bold ls-tight" title="Employee Name">@item.EmployeeName</h5>
+                            </div>
+                            <div class="col-lg-2 my-auto d-flex justify-content-center">
+                                <h6 class="card-subtitle fw-bold ls-tight" title="Reason" style="color:darkslategrey">@item.Reason</h6>
+                            </div>
+                            <div class="col-lg-2 my-auto d-flex justify-content-center">
+                                <h6 class="card-subtitle fw-bold ls-tight" title="Date" style="color: darkslategrey">@item.Date</h6>
+                            </div>
+                            <div class="col-lg-2 my-auto d-flex justify-content-center">
+                                <h6 class="card-subtitle fw-bold ls-tight" title="Number of Days" style="color: darkslategrey">@item.NumOfDays</h6>
+                            </div>
+                            <div class="col-lg-2 my-auto d-flex justify-content-center">
+                                <a class="w-50 btn" title="Edit" style="background-color:black;" asp-action="Edit" asp-route-id="@item.Id">
+                                    <i class="bi bi-pencil-square" style="color:white;"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    @*
     <h1>Index</h1>
 
     <p>
@@ -120,4 +180,5 @@ else if(User.IsInRole("Employee")){
             }
         </tbody>
     </table>
+    *@
 }

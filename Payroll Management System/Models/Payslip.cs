@@ -23,6 +23,7 @@ namespace Payroll_Management_System.Models
         [DisplayName("Leave Deduction")]
         public double LeaveDeduction { get; set; }
 
+        [DisplayName("Net Salary")]
         public double Salary { get; set; }
     }
 }

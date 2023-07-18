@@ -1,11 +1,144 @@
 ﻿@model Payroll_Management_System.Models.Level
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Level Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<div class="container mt-2">
+
+    <div class="row mt-3">
+        <div class="card shadow" style="border-radius:7px;">
+            <div class="card-body">
+                <div class="row mx-3">
+                    <div class="col-lg-11">
+                        <h4 class="fw-bold ls-tight d-flex justify-content-start" style="color:darkblue;">Level Details</h4>
+                    </div>
+                    <div class="col-lg-1">
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <a class="w-75 btn d-flex justify-content-end" title="Edit" style="background-color:blue;" asp-action="Edit" asp-route-id="@Model?.LevelId">
+                                <i class="bi bi-pencil-square" style="color:white;"></i>
+                            </a>
+                        }
+                    </div>
+                    @*
+                    <div class="col-lg-1">
+                        <a class="w-75 btn btn-danger d-flex justify-content-end" title="Delete User" asp-action="Delete" asp-route-id="@Model?.LevelId" onclick="return confirm('Are you sure you want to delete?')">
+                            <i class="bi bi-trash3-fill" style="color:white;"></i>
+                        </a>
+                    </div>
+                    *@
+                </div>
+                <hr />
+                <div class="container mx-5">
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.LevelId)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.LevelId)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.BasicPay)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.BasicPay)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.HouseRentAllowance)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.HouseRentAllowance)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.TravelAllowance)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.TravelAllowance)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.MedicalAllowance)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.MedicalAllowance)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.TaxDeductions)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.TaxDeductions)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.MonthlyLeavesPermitted)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.MonthlyLeavesPermitted)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <p class="card-text fw-bold">
+                                @Html.DisplayNameFor(model => model.LossOfPay)
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="card-text">
+                                @Html.DisplayFor(model => model.LossOfPay)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row d-flex justify-content-center mt-5">
+    <a asp-action="Index" class="w-25 btn btn-secondary">Back</a>
+</div>
+
+
+@*<h1>Details</h1>
 
 <div>
     <h4>Level</h4>
@@ -65,3 +198,4 @@
     <a asp-action="Edit" asp-route-id="@Model?.LevelId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+*@

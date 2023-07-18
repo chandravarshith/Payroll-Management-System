@@ -1,55 +1,67 @@
 ﻿@model Payroll_Management_System.Models.Leave
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Leave";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
-
-<h4>Leave</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="EmployeeId" class="control-label"></label>
-                <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
-                <span asp-validation-for="EmployeeId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LeaveStatus" class="control-label"></label>
-                <input asp-for="LeaveStatus" class="form-control" />
-                <span asp-validation-for="LeaveStatus" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
+<div class="row mt-5 d-flex justify-content-center">
+    <div class="col-md-5">
+        <h1 class="fw-bold ls-tight d-flex justify-content-center mt-3">Edit Leave</h1>
+        <hr />
+        <form enctype="multipart/form-data" asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger small"></div>
+            <input type="hidden" asp-for="EmployeeId" />
+            <input type="hidden" asp-for="EmployeeName" />
+            <input type="hidden" asp-for="LeaveStatus" />
+            <div class="form-floating mt-3">
+                <input id="LeaveDate" type="date" asp-for="Date" class="form-control shadow" />
+                <label asp-for="Date"></label>
                 <span asp-validation-for="Date" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="NumOfDays" class="control-label"></label>
-                <input asp-for="NumOfDays" class="form-control" />
+            <div class="form-floating mt-3">
+                <input asp-for="NumOfDays" class="form-control shadow" />
+                <label asp-for="NumOfDays"></label>
                 <span asp-validation-for="NumOfDays" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Reason" class="control-label"></label>
-                <input asp-for="Reason" class="form-control" />
+            <div class="form-group mt-3">
+                <label asp-for="Reason" class="form-control-sm" style="color:grey">Leave Type</label>
+                <select id="select1" asp-for="Reason" class="form-control shadow">
+                    <option value="" selected disabled>-- Select type --</option>
+                    <option value="Sick Leave">Sick Leave</option>
+                    <option value="Vacation Leave">Vacation Leave</option>
+                    <option value="Emergency Leave">Emergency Leave</option>
+                    <option value="Maternity Leave">Maternity Leave</option>
+                </select>
+                <!--<input asp-for="Reason" class="form-control" />-->
                 <span asp-validation-for="Reason" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="row mt-5 mb-5">
+                <div class="col-lg-6 d-flex justify-content-end">
+                    <input type="submit" value="Update" class="w-50 btn btn-success shadow" />
+                </div>
+                <div class="col-lg-6 d-flex justify-content-start">
+                    <a asp-action="Index" class="w-50 btn btn-outline-dark">Back</a>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $("document").ready(function () {
+            var today = new Date();
+
+            var dd = today.getDate();
+            var mm = today.getMonth();
+            var yyyy = today.getFullYear();
+
+            var minDate = yyyy + '-' + mm + '-' + dd;
+            $("#LeaveDate").attr('min', minDate);
+        });
+    </script>
 }
